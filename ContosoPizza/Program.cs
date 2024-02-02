@@ -1,3 +1,5 @@
+
+using ContosoPizza.Data;
 using ContosoPizza.Services;
 // Additional using declarations
 
@@ -12,6 +14,9 @@ builder.Services.AddSwaggerGen();
 // Add the PromotionsContext
 
 builder.Services.AddScoped<PizzaService>();
+builder.Services.AddScoped<CouponService>();
+builder.Services.AddSqlite<PizzaContext>("Data Source=ContosoPizza.db");
+builder.Services.AddSqlite<PromotionsContext>("Data Source=Promotions/Promotions.db");
 
 var app = builder.Build();
 
@@ -28,6 +33,8 @@ app.MapControllers();
 
 // Add the CreateDbIfNotExists method call
 
-app.MapGet("/", () => @"Contoso Pizza management API. Navigate to /swagger to open the Swagger test UI.");
+app.CreateDbIfNotExists();
+
+// app.MapGet("/", () => @"Contoso Pizza management API. Navigate to /swagger to open the Swagger test UI.");
 
 app.Run();
